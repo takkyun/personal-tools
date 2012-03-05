@@ -1,0 +1,83 @@
+#!/usr/bin/perl
+# 
+# rm_rsrc
+# == Author(s) : Takuya Otani <takuya.otani@gmail.com> ==
+# == Copyright (C) 2012 SimpleBoxes/SerendipityNZ Ltd. ==
+
+sub showUsage
+{
+	my $errMsg = shift;
+	print STDERR $errMsg,"\n\n" if ($errMsg ne '');
+	print STDERR << "__END_OF_USAGE__";
+Usage: $0 [OPTION] FILE
+      FILE is a target file. Its resource fork will be removed
+Options
+ -v   verbose mode to display resource fork info to be removed.
+__END_OF_USAGE__
+	exit 1;
+} # end of sub showUsage
+
+sub parseOption
+{
+	my %options = ();
+	while ($ARGV[0] =~ /^-/)
+	{
+		my $opt = shift @ARGV;
+		if ($opt eq '-v')
+		{
+			$options{'verbose'} = 1;
+		}
+		else
+		{
+			&showUsage();
+		}
+	}
+	return \%options;
+} # end of sub parseOption
+
+sub runMain
+{
+	my $file = shift;
+	my $option = shift;
+	if ($file eq '')
+	{
+		&showUsage();
+	}
+	elsif (!-e $file)
+	{
+		&showUsage('The file "' . $file . '" does not exist.');
+	}
+	elsif (-d $file)
+	{
+		&showUsage('"' . $file . '" is a directory.');
+	}
+
+	print $file . ' : ' if ($option->{'verbose'});
+
+	my $fileInfo = `ls -l@ "$file"`;
+	if ( $fileInfo =~ /[-rwxd]{10}([ @]).+?\n(.+\n)/s
+	 and $1 eq '@')
+	{
+		print 'removing resource fork ...' . "\n" if ($option->{'verbose'});
+		my @rsrcTypes = split(/\n/,$2);
+		foreach my $type (@rsrcTypes)
+		{
+			$type =~ s/^\s+//;
+			$type =~ s/\s+$//;
+			$type =~ s/\d+$//;
+			$type =~ s/\s//g;
+			`xattr -d "$type" "$file"`;
+			print ' => removed : ' . $type . "\n" if ($option->{'verbose'});
+		}
+	}
+	else
+	{
+		print 'no resource fork' . "\n" if ($option->{'verbose'});
+	}
+} # end of sub runMain
+
+{ # main 
+	my $option = &parseOption();
+	&runMain($ARGV[0],$option);
+}
+exit 0;
