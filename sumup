@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# sumup
+# == Author(s) : Takuya Otani <takuya.otani@gmail.com> ==
+# == Copyright (C) 2012 SimpleBoxes/SerendipityNZ Ltd. ==
+
+base=$*;
+
+if [[ "${base}" != "" ]]
+then
+  if ! test -d "${base}"; then
+    mkdir "${base}"
+  fi
+  mv "${base}"*.* "${base}"
+else
+	echo '=== usage ==='
+	echo '  sumup [FILE_PREFIX_TO_BE_SUMUP]'
+	echo '  [FILE_PREFIX_TO_BE_SUMUP] = file prefix to be sum up.'
+fi

@@ -2,6 +2,16 @@
 
 Some tiny utilities/scripts I'm personally using.
 
+* `rm_rsrc`  
+  [perl] Remove resource fork data from a file in OS X.
+
+* `sumup`  
+  [sh] Sum up files which have the same prefix.
+
+* `gen_uuid`  
+  [objective-c] Generate UUID.
+
+
 ## Copyright ##########################################################
 
 All scripts in "personal-tools" are developed by Takuya Otani / SimpleBoxes.
