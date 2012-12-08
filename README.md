@@ -9,7 +9,7 @@ Some tiny utilities/scripts I'm personally using.
   [sh] Sum up files which have the same prefix.
 
 * `gen_uuid`  
-  [objective-c] Generate UUID.
+  [c-lang] Generate UUID.
 
 
 ## Copyright ##########################################################
