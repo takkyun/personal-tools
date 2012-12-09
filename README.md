@@ -1,25 +1,62 @@
-# personal tools ######################################################
+# What's this?
 
-Some tiny utilities/scripts I'm personally using.
-
-* `rm_rsrc`  
-  [perl] Remove resource fork data from a file in OS X.
-
-* `sumup`  
-  [sh] Sum up files which have the same prefix.
-
-* `gen_uuid`  
-  [c-lang] Generate UUID.
+"personal-tools" contains some tiny utilities/scripts which SimpleBoxes is using personally.
 
 
-## Copyright ##########################################################
+## rm_rsrc
+
+Removes resource fork data from a file in OS X.
+
+> $ rm_rsrc FILE
+
+Internally it uses `xattr -d` command to remove resource fork.
+
+* language: perl
+* platform: OS X
+
+## sumup
+
+Sums up files which have the same prefix.
+
+> $ sumup FILE_PREFIX
+
+For example, the following files in a directory:
+
+> * ScreenShot 2012-12-07 at 8.57.27 PM.png> * ScreenShot 2012-12-07 at 9.13.20 AM.png> * ScreenShot 2012-12-08 at 9.14.22 AM.png> * ScreenShot 2012-12-08 at 9.14.43 AM.png> * ScreenShot 2012-12-09 at 9.14.56 AM.png> * ScreenShot 2012-12-09 at 9.15.12 AM.png> * ScreenShot 2012-12-09 at 9.15.37 AM.png> * ScreenShot 2012-12-09 at 9.15.55 AM.png> * ScreenShot 2012-12-09 at 9.16.13 AM.png> * ScreenShot 2012-12-09 at 9.16.47 AM.png
+
+Run the following command:
+
+> $ sumup ScreenShot\ 2012-12-09
+
+The script will create "ScreenShot 2012-12-09/" and move the asscoaued files into it.
+
+> * ScreenShot 2012-12-07 at 8.57.27 PM.png> * ScreenShot 2012-12-07 at 9.13.20 AM.png> * ScreenShot 2012-12-08 at 9.14.22 AM.png> * ScreenShot 2012-12-08 at 9.14.43 AM.png> * ScreenShot 2012-12-09/
+
+It works the files with extension.
+
+* language: bash
+
+## gen_uuid
+
+Generates UUID like "3A05D688-E97F-4DE7-A185-C289894CF542".
+
+It's written in C, so it needs to compiled like:
+
+> $ gcc -framework CoreFoundation -o gen_uuid gen_uuid.c
+
+It's using Apple's CoreFoundation framework, so it only works on OS X.
+
+* languge: C-lang
+* platform: OS X
+
+
+# Copyright 
 
 All scripts in "personal-tools" are developed by Takuya Otani / SimpleBoxes.
 
 Copyright (c) 2012 [SerendipityNZ](http://serendipitynz.com/) Ltd. 
 
-## License ############################################################
-
+# License 
 All scripts in "personal-tools" will be released under the MIT-license.
 
 Permission is hereby granted, free of charge, to any person obtaining 
