@@ -36,20 +36,6 @@ It works the files with extension.
 
 * language: bash
 
-## gen_uuid
-
-Generates UUID like "3A05D688-E97F-4DE7-A185-C289894CF542".
-
-It's written in C, so it needs to compiled like:
-
-> $ gcc -framework CoreFoundation -o gen_uuid gen_uuid.c
-
-It's using Apple's CoreFoundation framework, so it only works on OS X.
-
-* languge: C-lang
-* platform: OS X
-
-
 # Copyright 
 
 All scripts in "personal-tools" are developed by Takuya Otani / SimpleBoxes.
