@@ -1,0 +1,29 @@
+#!/usr/bin/env -S deno run --allow-read --allow-write
+
+const index = 'index.ts';
+
+let indexContents = ''
+try {
+  indexContents = Deno.readTextFileSync(index);
+} catch (e) {}
+
+const files = [];
+for (const entry of  Deno.readDirSync('.')) {
+  if (!entry.isFile) {
+    continue;
+  }
+  if (entry.name.match(/index/)) {
+    continue;
+  }
+  files.push(entry.name);
+}
+
+const result = files.reduce((res, cur) => {
+  const name = cur.substring(0, cur.lastIndexOf('.'));
+  if (indexContents && indexContents.indexOf(name) >= 0) {
+    return res
+  }
+  return `${res}export * from './${name}';\n`;
+}, indexContents).split('\n').sort().filter(n => !!n).join('\n');
+
+Deno.writeTextFileSync(index, `${result}\n`);

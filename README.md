@@ -2,6 +2,11 @@
 
 "personal-tools" contains some tiny utilities/scripts which SimpleBoxes is using personally.
 
+## gen_index_ts
+
+- language: javascript via [deno](https://deno.land/)
+
+Generates `index.ts` for the current directory.
 
 ## rm_rsrc
 
