@@ -5,16 +5,18 @@
 
 ## rm_rsrc
 
-Removes resource fork data from a file in OS X.
+- language: perl
+- platform: macOS
+
+Removes resource fork data from a file in macOS.
 
 > $ rm_rsrc FILE
 
 Internally it uses `xattr -d` command to remove resource fork.
 
-* language: perl
-* platform: OS X
-
 ## sumup
+
+- language: bash
 
 Sums up files which have the same prefix.
 
@@ -22,7 +24,16 @@ Sums up files which have the same prefix.
 
 For example, the following files in a directory:
 
-> * ScreenShot 2012-12-07 at 8.57.27 PM.png> * ScreenShot 2012-12-07 at 9.13.20 AM.png> * ScreenShot 2012-12-08 at 9.14.22 AM.png> * ScreenShot 2012-12-08 at 9.14.43 AM.png> * ScreenShot 2012-12-09 at 9.14.56 AM.png> * ScreenShot 2012-12-09 at 9.15.12 AM.png> * ScreenShot 2012-12-09 at 9.15.37 AM.png> * ScreenShot 2012-12-09 at 9.15.55 AM.png> * ScreenShot 2012-12-09 at 9.16.13 AM.png> * ScreenShot 2012-12-09 at 9.16.47 AM.png
+> * ScreenShot 2012-12-07 at 8.57.27 PM.png
+> * ScreenShot 2012-12-07 at 9.13.20 AM.png
+> * ScreenShot 2012-12-08 at 9.14.22 AM.png
+> * ScreenShot 2012-12-08 at 9.14.43 AM.png
+> * ScreenShot 2012-12-09 at 9.14.56 AM.png
+> * ScreenShot 2012-12-09 at 9.15.12 AM.png
+> * ScreenShot 2012-12-09 at 9.15.37 AM.png
+> * ScreenShot 2012-12-09 at 9.15.55 AM.png
+> * ScreenShot 2012-12-09 at 9.16.13 AM.png
+> * ScreenShot 2012-12-09 at 9.16.47 AM.png
 
 Run the following command:
 
@@ -30,11 +41,13 @@ Run the following command:
 
 The script will create "ScreenShot 2012-12-09/" and move the asscoaued files into it.
 
-> * ScreenShot 2012-12-07 at 8.57.27 PM.png> * ScreenShot 2012-12-07 at 9.13.20 AM.png> * ScreenShot 2012-12-08 at 9.14.22 AM.png> * ScreenShot 2012-12-08 at 9.14.43 AM.png> * ScreenShot 2012-12-09/
+> * ScreenShot 2012-12-07 at 8.57.27 PM.png
+> * ScreenShot 2012-12-07 at 9.13.20 AM.png
+> * ScreenShot 2012-12-08 at 9.14.22 AM.png
+> * ScreenShot 2012-12-08 at 9.14.43 AM.png
+> * ScreenShot 2012-12-09/
 
 It works the files with extension.
-
-* language: bash
 
 # Copyright 
 
