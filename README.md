@@ -23,6 +23,14 @@ Existing `.jpg` files are never overwritten, and the converted JPEG keeps the or
 
 Internally it uses the `sips` command bundled with macOS.
 
+### heic2jpg.app (drag & drop)
+
+> $ make
+
+builds `heic2jpg.app`, a droplet that runs `heic2jpg` on files or folders dropped onto it.
+Put it in the Dock or `/Applications` and drop HEIC files on it; double-clicking it opens a file chooser instead.
+Rebuild it after editing `heic2jpg`, since the app bundles its own copy of the script.
+
 ## rm_rsrc
 
 - language: perl
