@@ -56,7 +56,11 @@ for target in "$@"; do
   if [ -d "${target}" ]; then
     while IFS= read -r -d '' file; do
       convert "${file}"
-    done < <(find "${target}" -type f \( -iname '*.heic' -o -iname '*.heif' \) -print0)
+    # -H follows a symlinked starting directory. Pruning skips Photos libraries,
+    # whose internals Photos manages itself, and hidden entries such as the
+    # AppleDouble "._*.heic" files that external drives carry.
+    done < <(find -H "${target}" -mindepth 1 \( -name '.*' -o -name '*.photoslibrary' \) -prune \
+      -o -type f \( -iname '*.heic' -o -iname '*.heif' \) -print0)
   elif [ -f "${target}" ]; then
     case "${target}" in
       *.[hH][eE][iI][cCfF])
