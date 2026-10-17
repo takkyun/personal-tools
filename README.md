@@ -28,8 +28,12 @@ Internally it uses the `sips` command bundled with macOS.
 > $ make
 
 builds `heic2jpg.app`, a droplet that runs `heic2jpg` on files or folders dropped onto it.
-Put it in the Dock or `/Applications` and drop HEIC files on it; double-clicking it opens a file chooser instead.
-Rebuild it after editing `heic2jpg`, since the app bundles its own copy of the script.
+Double-clicking it opens a file chooser instead.
+
+> $ make install
+
+copies it to `/Applications` (override with `INSTALL_DIR=...`), from where it can be added to the Dock.
+The app bundles its own copy of `heic2jpg`, so run `make install` again after editing the script; rebuilding with `make` alone leaves the installed copy unchanged.
 
 ## rm_rsrc
 
