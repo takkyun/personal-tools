@@ -1,0 +1,80 @@
+#!/bin/bash
+
+# heic2jpg
+# == Author(s) : Takuya Otani <takuya.otani@gmail.com> ==
+# == Copyright (C) 2026 SimpleBoxes/SerendipityNZ Ltd. ==
+
+# Must stay compatible with macOS's /bin/bash 3.2: the heic2jpg.app droplet
+# runs this script through it.
+
+usage() {
+  echo "usage: $(basename "$0") [-q QUALITY] FILE_OR_DIRECTORY..." >&2
+  echo "  QUALITY = 0-100 | low | normal | high | best (passed to sips formatOptions)" >&2
+  exit 64
+}
+
+sips_options=(-s format jpeg)
+while getopts q: opt; do
+  case "${opt}" in
+    q) sips_options+=(-s formatOptions "${OPTARG}") ;;
+    *) usage ;;
+  esac
+done
+shift $((OPTIND - 1))
+
+if [ $# -eq 0 ]; then
+  usage
+fi
+
+converted=0
+skipped=0
+failed=0
+
+convert() {
+  local src="$1"
+  local dst="${src%.*}.jpg"
+
+  if [ -e "${dst}" ]; then
+    echo "skipped (already exists): ${dst}" >&2
+    skipped=$((skipped + 1))
+    return
+  fi
+
+  if sips "${sips_options[@]}" "${src}" --out "${dst}" >/dev/null && [ -s "${dst}" ]; then
+    # Keep the capture-time mtime so the JPEG sorts alongside the original.
+    touch -r "${src}" "${dst}"
+    echo "converted: ${dst}"
+    converted=$((converted + 1))
+  else
+    rm -f "${dst}"
+    echo "failed: ${src}" >&2
+    failed=$((failed + 1))
+  fi
+}
+
+for target in "$@"; do
+  if [ -d "${target}" ]; then
+    while IFS= read -r -d '' file; do
+      convert "${file}"
+    done < <(find "${target}" -type f \( -iname '*.heic' -o -iname '*.heif' \) -print0)
+  elif [ -f "${target}" ]; then
+    case "${target}" in
+      *.[hH][eE][iI][cCfF])
+        convert "${target}"
+        ;;
+      *)
+        echo "skipped (not HEIC): ${target}" >&2
+        skipped=$((skipped + 1))
+        ;;
+    esac
+  else
+    echo "failed (not found): ${target}" >&2
+    failed=$((failed + 1))
+  fi
+done
+
+echo "${converted} converted, ${skipped} skipped, ${failed} failed"
+
+if [ "${failed}" -gt 0 ]; then
+  exit 1
+fi

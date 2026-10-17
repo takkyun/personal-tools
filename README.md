@@ -8,6 +8,21 @@
 
 Generates `index.ts` for the current directory.
 
+## heic2jpg
+
+- language: bash
+- platform: macOS
+
+Converts HEIC/HEIF images to JPEG next to the originals.
+
+> $ heic2jpg [-q QUALITY] FILE_OR_DIRECTORY...
+
+Directories are searched recursively for `.heic` / `.heif` files.
+Existing `.jpg` files are never overwritten, and the converted JPEG keeps the original's modification date.
+`QUALITY` is `0`-`100`, `low`, `normal`, `high` or `best`.
+
+Internally it uses the `sips` command bundled with macOS.
+
 ## rm_rsrc
 
 - language: perl
