@@ -52,15 +52,25 @@ convert() {
   fi
 }
 
+# find writes to a file rather than a process substitution because bash 3.2
+# cannot recover a process substitution's exit status, and an unreadable
+# subdirectory must not pass as a fully converted folder.
+file_list=$(mktemp -t heic2jpg) || exit 1
+trap 'rm -f "${file_list}"' EXIT
+
 for target in "$@"; do
   if [ -d "${target}" ]; then
-    while IFS= read -r -d '' file; do
-      convert "${file}"
     # -H follows a symlinked starting directory. Pruning skips Photos libraries,
     # whose internals Photos manages itself, and hidden entries such as the
     # AppleDouble "._*.heic" files that external drives carry.
-    done < <(find -H "${target}" -mindepth 1 \( -name '.*' -o -name '*.photoslibrary' \) -prune \
-      -o -type f \( -iname '*.heic' -o -iname '*.heif' \) -print0)
+    if ! find -H "${target}" -mindepth 1 \( -name '.*' -o -name '*.photoslibrary' \) -prune \
+      -o -type f \( -iname '*.heic' -o -iname '*.heif' \) -print0 > "${file_list}"; then
+      echo "failed (could not search everything in): ${target}" >&2
+      failed=$((failed + 1))
+    fi
+    while IFS= read -r -d '' file; do
+      convert "${file}"
+    done < "${file_list}"
   elif [ -f "${target}" ]; then
     case "${target}" in
       *.[hH][eE][iI][cCfF])
