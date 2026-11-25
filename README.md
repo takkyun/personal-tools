@@ -23,17 +23,19 @@ Existing `.jpg` files are never overwritten, and the converted JPEG keeps the or
 
 Internally it uses the `sips` command bundled with macOS.
 
-### heic2jpg.app (drag & drop)
-
-> $ make
-
-builds `heic2jpg.app`, a droplet that runs `heic2jpg` on files or folders dropped onto it.
-Double-clicking it opens a file chooser instead.
+### heic2jpg.app (drag & drop / Open With)
 
 > $ make install
 
-copies it to `/Applications` (override with `INSTALL_DIR=...`), from where it can be added to the Dock.
-The app bundles its own copy of `heic2jpg`, so run `make install` again after editing the script; rebuilding with `make` alone leaves the installed copy unchanged.
+builds `heic2jpg.app` and installs it to `/Applications` (override with `INSTALL_DIR=...`).
+The app runs `heic2jpg` on whatever it is given:
+
+- Finder: right-click HEIC files and choose Open With > heic2jpg. It is offered only as an alternative, so the default app for HEIC is unchanged.
+- Dock: add it to the Dock and drop HEIC files or folders onto it.
+- Double-clicking it opens a file chooser.
+
+`make` alone builds into `build.noindex/`, which Spotlight does not index, so the build never appears in Open With alongside the installed copy.
+The app bundles its own copy of `heic2jpg`, so run `make install` again after editing the script.
 
 ## rm_rsrc
 
